@@ -1,8 +1,6 @@
 ---
-title: "Iceberg"
+title: "Kong API Gateway"
 ring: adopt
 quadrant: platforms-and-operations
-tags: [new]
+tags: [gateway]
 ---
-
-Apache Iceberg
