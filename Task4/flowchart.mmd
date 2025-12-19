@@ -1,0 +1,64 @@
+flowchart TD
+    %% ========== СЕКЦИЯ 1: ТРИГГЕР И CI/CD ПАЙПЛАЙН ==========
+    Git[Git-репозиторий<br/>с кодом приложения] --> |Push/Merge в main| CI[CI/CD Pipeline<br/>GitLab CI/GitHub Actions/Jenkins]
+    
+    CI --> Build[Сборка Docker-образа]
+    Build --> Test[Запуск тестов]
+    Test --> Plan[Terraform Plan<br/>Проверка изменений]
+    Plan --> Approval{Ручное подтверждение?}
+    Approval --> Apply[Terraform Apply]
+
+    
+    %% ========== СЕКЦИЯ 2: КОМПОНЕНТЫ ИНФРАСТРУКТУРЫ ==========
+    subgraph ManagedByTerraform["Управляется TERRAFORM (IaC)"]
+        direction TB
+        T1["VPC / Облачная сеть"]
+        T2["Подсети"]
+        T3["Группы безопасности<br/>Фаервол-правила"]
+        T4["Виртуальные машины<br/>(CPU, RAM, зона)"]
+        T5["Диски<br/>(размер, тип SSD/HDD)"]
+        T6["Балансировщик нагрузки<br/>и целевые группы"]
+        T7["Статические IP-адреса"]
+        
+        T1 --> T2
+        T2 --> T4
+        T3 --> T4
+        T3 --> T6
+        T5 --> T4
+        T6 --> T4
+    end
+    
+    subgraph ManualConfig["Управляется ВРУЧНУЮ / другими инструментами"]
+        direction LR
+        M1["Docker-образы приложения<br/>(собираются в CI/CD)"]
+        M2["Конфигурация приложения<br/>(env vars, config files)"]
+        M3["Доменные имена и DNS"]
+        M4["Секреты и ключи доступа<br/>(Vault, Secrets Manager)"]
+        M5["Настройка ОС внутри VM<br/>(Ansible, cloud-init, bash)"]
+        M6["Сертификаты SSL/TLS"]
+    end
+    
+    %% ========== СЕКЦИЯ 3: СВЯЗИ И ДЕПЛОЙ ==========
+    Apply --> ManagedByTerraform
+    
+    ManagedByTerraform --> Deploy[Деплой приложения<br/>на созданную инфраструктуру]
+    ManualConfig --> Deploy
+    
+    Deploy --> SmokeTest[Дымовое тестирование<br/>/ Health Checks]
+    SmokeTest --> Production[Продакшен среда]
+    SmokeTest --> Stage[Стейдж-среда]
+    SmokeTest --> Dev[Дев-среда]
+    
+    %% ========== СЕКЦИЯ 4: ВНЕШНИЕ СЕРВИСЫ ==========
+    subgraph ExternalServices[Внешние сервисы и зависимости]
+        E1[Container Registry<br/>Docker Hub/GitLab Registry]
+        E2[Terraform State Backend<br/>S3/Terraform Cloud]
+        E3[Secrets Manager<br/>HashiCorp Vault/AWS Secrets]
+        E4[Monitoring<br/>Prometheus/Grafana]
+    end
+    
+    E1 --> Build
+    E2 --> Apply
+    E3 --> Deploy
+    E4 --> Production
+    E4 --> Stage
