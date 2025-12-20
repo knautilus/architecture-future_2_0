@@ -1,6 +1,6 @@
 ---
 title: "Power BI"
-ring: hold
+ring: adopt
 quadrant: platforms-and-operations
-tags: [BI]
+tags: [BI, old]
 ---

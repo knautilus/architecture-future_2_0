@@ -1,6 +1,6 @@
 ---
-title: "Java"
+title: "JavaScript"
 ring: adopt
 quadrant: languages-and-frameworks
-tags: [backend, old]
+tags: [frontend, new]
 ---

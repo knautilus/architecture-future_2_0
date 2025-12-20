@@ -2,5 +2,5 @@
 title: "Prometheus/Grafana"
 ring: adopt
 quadrant: tools
-tags: [logs]
+tags: [logs, new]
 ---

@@ -2,5 +2,5 @@
 title: "Iceberg"
 ring: adopt
 quadrant: platforms-and-operations
-tags: [new]
+tags: [BI, new]
 ---
