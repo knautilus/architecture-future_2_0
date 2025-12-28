@@ -1,6 +1,6 @@
 ---
-title: "Vue.js"
+title: "ReactJS"
 ring: adopt
 quadrant: languages-and-frameworks
-tags: [frontend]
+tags: [frontend, new]
 ---

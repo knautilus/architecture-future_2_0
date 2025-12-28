@@ -16,6 +16,17 @@ provider "yandex" {
   zone      = var.yc_zone
 }
 
+resource "yandex_vpc_network" "main" {
+  name = "main-network"
+}
+
+resource "yandex_vpc_subnet" "main" {
+  name           = "main-subnet"
+  zone           = var.yc_zone
+  network_id     = yandex_vpc_network.main.id
+  v4_cidr_blocks = var.cidr_blocks
+}
+
 data "yandex_compute_image" "ubuntu" {
   family = "ubuntu-2204-lts"
 }
@@ -25,7 +36,7 @@ resource "yandex_compute_disk" "vm_disk" {
   type     = "network-hdd"
   zone     = var.yc_zone
   image_id = data.yandex_compute_image.ubuntu.image_id
-  size     = 20
+  size     = var.vm_disk_size
 }
 
 resource "yandex_compute_instance" "vm" {
@@ -33,8 +44,8 @@ resource "yandex_compute_instance" "vm" {
   zone = var.yc_zone
 
   resources {
-    cores  = 2
-    memory = 2
+    cores  = var.vm_cores
+    memory = var.vm_memory
   }
 
   boot_disk {
@@ -42,7 +53,7 @@ resource "yandex_compute_instance" "vm" {
   }
 
   network_interface {
-    subnet_id = var.subnet_id
+    subnet_id = yandex_vpc_subnet.main.id
     nat       = true
   }
 

@@ -1,6 +1,6 @@
 ---
-title: "Power BI"
+title: "Dremio"
 ring: adopt
 quadrant: platforms-and-operations
-tags: [BI, old]
+tags: [BI, new]
 ---

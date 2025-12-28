@@ -1,5 +1,5 @@
 ---
-title: "Prometheus + Grafana"
+title: "Jaeger"
 ring: adopt
 quadrant: tools
 tags: [observability, new]

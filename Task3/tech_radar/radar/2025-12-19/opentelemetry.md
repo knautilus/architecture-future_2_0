@@ -1,5 +1,5 @@
 ---
-title: "Prometheus + Grafana"
+title: "OpenTelemetry"
 ring: adopt
 quadrant: tools
 tags: [observability, new]
